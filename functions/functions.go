@@ -93,7 +93,7 @@ func (c circle) getArea() float64  {
 //阶乘
 func factorialDemo()  {
 	fmt.Println("----阶乘-----")
-	fmt.Printf("15的阶乘为:%d ", factorial(15))
+	fmt.Printf("15的阶乘为:%d\n ", factorial(15))
 }
 
 func factorial(n int) (result int){
