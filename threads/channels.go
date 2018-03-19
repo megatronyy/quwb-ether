@@ -3,11 +3,11 @@ package threads
 import "fmt"
 
 func Run() {
-	syncGoroutine()
+	//syncGoroutine()
+	cacheChan()
 }
 
-
-func syncGoroutine(){
+func syncGoroutine() {
 	g := make(chan int)
 	quit := make(chan bool)
 
@@ -23,7 +23,7 @@ func syncGoroutine(){
 		}
 	}()
 
-	for i := 0; i < 3; i ++{
+	for i := 0; i < 3; i ++ {
 		g <- i
 	}
 
@@ -52,4 +52,36 @@ func fanIn(input1, input2 <-chan string) <-chan string {
 	}()
 
 	return c
+}
+
+func cacheChan() {
+	jobs := make(chan int)
+	done := make(chan bool)
+
+	go func() {
+		fmt.Println("GoStart")
+		for i := 1; ; i++ {
+			fmt.Println("GoforSTART", i)
+			j, more := <-jobs
+			if more {
+				fmt.Println("received job", j)
+			} else {
+				fmt.Println("received all jobs")
+				done <- true
+				return
+			}
+			fmt.Println("GoForEnd", i)
+		}
+	}()
+
+	for j := 1; j <= 3; j++ {
+		fmt.Println("OutFOR", j)
+		jobs <- j
+		fmt.Println("send job", j)
+	}
+
+	close(jobs)
+	fmt.Println("sent all jobs")
+
+	<-done
 }
