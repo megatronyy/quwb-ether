@@ -8,6 +8,8 @@ func Run(){
 	pointer()
 	any(333)
 	any("666")
+	lookPath()
+	command()
 }
 
 func pointer()  {
