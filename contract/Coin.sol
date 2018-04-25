@@ -6,6 +6,7 @@ pragma solidity ^0.4.0;
     3、函数的权限默认是public类型，public类型的函数可供外表访问，
        而internal和pravate类型的函数不能通过指针（this表示当前智能合约的指针）访问。
        哪怕在内容通过this访问都会报错。在合约内部访问，可以直接访问函数。
+    4、function (<parameter types>) {internal|external} [pure|constant|view|payable] [returns (<return types>)]
 */
 contract Coin {
     //关键字“public”使变量能从合约外部访问
