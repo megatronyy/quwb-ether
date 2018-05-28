@@ -1,4 +1,4 @@
-package client
+package main
 
 import (
 	"google.golang.org/grpc"
@@ -22,7 +22,7 @@ func main() {
 
 	c := pb.NewGreeterClient(conn)
 	name := defaultName
-	if len(os.Args) >1 {
+	if len(os.Args) > 1 {
 		name = os.Args[1]
 	}
 
