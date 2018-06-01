@@ -1,4 +1,4 @@
-pragma solidity ^0.4.0;
+pragma solidity ^0.4.21;
 /*
     1、访问权限 public，internal，pravate，external
     2、属性默认权限为inernal，只有public类型的属性才可能供外部访问。
@@ -9,27 +9,27 @@ pragma solidity ^0.4.0;
     4、function (<parameter types>) {internal|external} [pure|constant|view|payable] [returns (<return types>)]
 */
 contract Coin {
-    //关键字“public”使变量能从合约外部访问
+    // 关键字“public”让这些变量可以从外部读取
     address public minter;
     mapping (address => uint) public balances;
 
-    //事件让轻客户端能高效的对变化做出反应
-    event Sent(address from, address to, int amount);
+    // 轻客户端可以通过事件针对变化作出高效的反应
+    event Sent(address from, address to, uint amount);
 
-    //这个构造函数的代码仅仅只在合约创建的时候被运行
-    function Coin(){
+    // 这是构造函数，只有当合约创建时运行
+    function Coin() public {
         minter = msg.sender;
     }
-    //铸币
-    function mint(address receiver, uint amount) {
+
+    function mint(address receiver, uint amount) public {
         if (msg.sender != minter) return;
         balances[receiver] += amount;
     }
-    //发送货币
-    function send(address receiver, uint amount) {
+
+    function send(address receiver, uint amount) public {
         if (balances[msg.sender] < amount) return;
         balances[msg.sender] -= amount;
         balances[receiver] += amount;
-        Sent(msg.sender, receiver, amount);
+        emit Sent(msg.sender, receiver, amount);
     }
 }
