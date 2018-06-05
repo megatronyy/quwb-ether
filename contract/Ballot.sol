@@ -23,7 +23,7 @@ contract Ballot {
     Proposal[] public proposals;
 
     //创建一个新的投票用于选出一个提案名proposalNames
-    function Ballot(bytes32[] proposalNames){
+    function Ballot(bytes32[] proposalNames) public {
         chairperson = msg.sender;
         voters[chairperson].weight = 1;
 
@@ -41,23 +41,23 @@ contract Ballot {
 
     //给投票人`voter`参加投票的投票权，
     //只能由投票主持人`chairperson`调用。
-    function giveRightToVote(address voter){
+    function giveRightToVote(address voter) public {
         if (msg.sender != chairperson || voters[voter].voted) {
             //`throw`会终止和撤销所有的状态和以太改变。
             //如果函数调用无效，这通常是一个好的选择。
             //但是需要注意，这会消耗提供的所有gas。
-            throw;
+            revert();
         }
 
         voters[voter].weight = 1;
     }
 
     // 委托你的投票权到一个投票代表 `to`。
-    function delegate(address to){
+    function delegated(address to) public {
         // 指定引用
-        Voter sender = voters[msg.sender];
-        if (sender.voted)
-            throw;
+        Voter storage senders = voters[msg.sender];
+        if (senders.voted)
+            revert();
 
         //当投票代表`to`也委托给别人时，寻找到最终的投票代表
         while (voters[to].delegate != address(0) &&
@@ -67,45 +67,45 @@ contract Ballot {
 
         // 当最终投票代表等于调用者，是不被允许的。
         if (to == msg.sender) {
-            throw;
+            revert();
         }
 
         //因为`sender`是一个引用，
         //这里实际修改了`voters[msg.sender].voted`
-        sender.voted = true;
-        sender.delegate = to;
-        Voter delegate = voters[to];
-        if (delegate.voted) {
+        senders.voted = true;
+        senders.delegate = to;
+        Voter storage delegates = voters[to];
+        if (delegates.voted) {
             //如果委托的投票代表已经投票了，直接修改票数
-            proposals[delegate.vote].voteCount += sender.weight;
+            proposals[delegates.vote].voteCount += senders.weight;
         } else {
             //如果投票代表还没有投票，则修改其投票权重。
-            delegate.weight += sender.weight;
+            delegates.weight += senders.weight;
         }
     }
 
     ///投出你的选票（包括委托给你的选票）
     ///给 `proposals[proposal].name`。
-    function vote(uint proposal){
-        Voter sender = voters[msg.sender];
-        if (sender.voted) throw;
-        sender.voted = true;
-        sender.vote = proposal;
+    function vote(uint proposal) public {
+        Voter storage senders = voters[msg.sender];
+        if (senders.voted) revert();
+        senders.voted = true;
+        senders.vote = proposal;
         //如果`proposal`索引超出了给定的提案数组范围
         //将会自动抛出异常，并撤销所有的改变。
-        proposals[proposal].voteCount += sender.weight;
+        proposals[proposal].voteCount += senders.weight;
     }
 
     ///@dev 根据当前所有的投票计算出当前的胜出提案
-    function winningProposal() constant
-    returns (uint winningProposal){
+    function winningProposal() constant public
+    returns (uint winning){
         uint winningVoteCount = 0;
         for (uint p = 0; p < proposals.length; p++)
         {
             if (proposals[p].voteCount > winningVoteCount)
             {
                 winningVoteCount = proposals[p].voteCount;
-                winningProposal = p;
+                winning = p;
             }
         }
     }
