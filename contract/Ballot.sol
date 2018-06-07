@@ -23,7 +23,7 @@ contract Ballot {
     Proposal[] public proposals;
 
     //创建一个新的投票用于选出一个提案名proposalNames
-    function Ballots(bytes32[] proposalNames) public {
+    function Ballot(bytes32[] proposalNames) public {
         chairperson = msg.sender;
         voters[chairperson].weight = 1;
 
