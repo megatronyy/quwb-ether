@@ -2,7 +2,7 @@ package main
 
 import (
 	"context"
-	pb "quwb-ether/rpc"
+	pb "github.com/twfx7758/quwb-ether/rpc"
 	"net"
 	"log"
 	"google.golang.org/grpc"

@@ -1,7 +1,7 @@
 package main
 
 import (
-	"quwb-ether/typedefs"
+	"github.com/twfx7758/quwb-ether/typedefs"
 )
 
 func main() {

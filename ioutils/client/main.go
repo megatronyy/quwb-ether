@@ -4,7 +4,7 @@ import (
 	"net"
 	"compress/zlib"
 	"bufio"
-	"quwb-ether/ioutils"
+	"github.com/twfx7758/quwb-ether/ioutils"
 )
 
 func main() {

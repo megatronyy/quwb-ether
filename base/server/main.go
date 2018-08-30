@@ -1,6 +1,6 @@
 package main
 
-import "quwb-ether/base"
+import "github.com/twfx7758/quwb-ether/base"
 
 func main() {
 	base.Run()

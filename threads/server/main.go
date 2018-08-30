@@ -1,6 +1,6 @@
 package main
 
-import "quwb-ether/threads"
+import "github.com/twfx7758/quwb-ether/threads"
 
 func main() {
 	threads.Run()

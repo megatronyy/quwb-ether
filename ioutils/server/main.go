@@ -2,7 +2,7 @@ package main
 
 import (
 	"net"
-	"quwb-ether/ioutils"
+	"github.com/twfx7758/quwb-ether/ioutils"
 )
 
 func main() {
