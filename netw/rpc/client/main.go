@@ -3,7 +3,7 @@ package main
 import (
 	"google.golang.org/grpc"
 	"log"
-	pb "github.com/twfx7758/quwb-ether/rpc"
+	pb "github.com/twfx7758/quwb-ether/netw/rpc"
 	"os"
 	"context"
 )
