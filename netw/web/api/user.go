@@ -4,6 +4,7 @@ import (
 	"github.com/emicklei/go-restful"
 	"net/http"
 	"log"
+	"fmt"
 )
 
 type User struct {
@@ -53,6 +54,22 @@ func (u UserResource) updateUser(request *restful.Request, response *restful.Res
 		response.AddHeader("Content-Type", "text/plain")
 		response.WriteErrorString(http.StatusInternalServerError, err.Error())
 	}
+}
+
+func (u *UserResource) buildHandlerChain(apiHandler http.Handler) http.Handler {
+	handler := u.withHandler(nil, "接口进入")
+	handler = u.withHandler(apiHandler, "开始执行接口逻辑")
+	handler = u.withHandler(handler, "接口退出")
+	return handler
+}
+
+func (u *UserResource) withHandler(handler http.Handler, msg string) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
+		fmt.Println(msg)
+		if handler != nil {
+			handler.ServeHTTP(w, req)
+		}
+	})
 }
 
 // PUT http://localhost:8083/users/1
