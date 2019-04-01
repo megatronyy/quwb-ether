@@ -1,8 +1,8 @@
 package main
 
 import (
-	"os"
 	"fmt"
+	"os"
 )
 
 func main() {
@@ -10,20 +10,9 @@ func main() {
 
 	//_ = f(s)
 
-	defer_demo()
+	// defer_demo()
 
-	//var n number
-	//
-	//defer n.print()
-	//defer n.pprint()
-	//defer func() {
-	//	n.print()
-	//}()
-	//defer func() {
-	//	n.pprint()
-	//}()
-
-	//n = 3
+	start()
 }
 
 func f(s []int) int {
@@ -53,6 +42,21 @@ func defer_demo() {
 }
 
 type number int
+
+func start() {
+	var n number
+
+	defer n.print()
+	defer n.pprint()
+	defer func() {
+		n.print()
+	}()
+	defer func() {
+		n.pprint()
+	}()
+
+	n = 3
+}
 
 func (n number) print() {
 	fmt.Println(n)
